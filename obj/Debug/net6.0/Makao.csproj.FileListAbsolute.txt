@@ -1,0 +1,15 @@
+C:\Users\neman\source\repos\Makao\bin\Debug\net6.0\Makao.exe
+C:\Users\neman\source\repos\Makao\bin\Debug\net6.0\Makao.deps.json
+C:\Users\neman\source\repos\Makao\bin\Debug\net6.0\Makao.runtimeconfig.json
+C:\Users\neman\source\repos\Makao\bin\Debug\net6.0\Makao.dll
+C:\Users\neman\source\repos\Makao\bin\Debug\net6.0\Makao.pdb
+C:\Users\neman\source\repos\Makao\obj\Debug\net6.0\Makao.csproj.AssemblyReference.cache
+C:\Users\neman\source\repos\Makao\obj\Debug\net6.0\Makao.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\neman\source\repos\Makao\obj\Debug\net6.0\Makao.AssemblyInfoInputs.cache
+C:\Users\neman\source\repos\Makao\obj\Debug\net6.0\Makao.AssemblyInfo.cs
+C:\Users\neman\source\repos\Makao\obj\Debug\net6.0\Makao.csproj.CoreCompileInputs.cache
+C:\Users\neman\source\repos\Makao\obj\Debug\net6.0\Makao.dll
+C:\Users\neman\source\repos\Makao\obj\Debug\net6.0\refint\Makao.dll
+C:\Users\neman\source\repos\Makao\obj\Debug\net6.0\Makao.pdb
+C:\Users\neman\source\repos\Makao\obj\Debug\net6.0\Makao.genruntimeconfig.cache
+C:\Users\neman\source\repos\Makao\obj\Debug\net6.0\ref\Makao.dll
