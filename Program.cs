@@ -1,4 +1,5 @@
-﻿using System.Linq.Expressions;
+﻿using System;
+using System.Linq.Expressions;
 
 namespace Makao
 {
@@ -80,26 +81,31 @@ namespace Makao
 
         public static bool BaciKartuNaSto(ref Karta igrac, ref Karta[] sto)
         {
-            if (sto != null)
+            AddElementToArray(ref sto, igrac);
+            return true;
+        }
+        public static void IzbaciKartuIzRuku(ref Karta[] ruka, ref Karta karta)
+        {
+            if (ruka.Length == 0)
+                throw new InvalidOperationException("Array is empty.");
+
+            Karta[] newArray = new Karta[ruka.Length - 1];
+
+            int brojac = 0;
+
+            for (int i = 0; i < ruka.Length; i++)
             {
-                if (sto[sto.Length - 1].znak == igrac.znak || sto[sto.Length - 1].broj == igrac.broj || igrac.broj == 12)
+                if (ruka[i].znak == karta.znak && ruka[i].broj == karta.broj)
                 {
-                    AddElementToArray(ref sto, igrac);
-                    return true;
+
                 }
                 else
                 {
-                    Console.WriteLine("Ne mozete da odigrate ovu kartu, sta vi mislite ko ste?");
-                    return false;
+                    newArray[brojac] = ruka[i];
+                    brojac++;
                 }
             }
-            else   //karta na pocetku igre
-            {
-                AddElementToArray(ref sto, igrac);
-                return true;
-            }
-            //provera da li moze da baci tu kartu
-            
+            ruka = newArray;
         }
         public static void ProveraZadnjeKarteUSpilu(ref Karta[] spil, ref Karta[] sto)
         {
@@ -134,6 +140,8 @@ namespace Makao
 
         static void Main(string[] args)
         {
+            int koIgra = 0;
+            int kupi2Stack = 0;
             Karta[] rukaIgrac=null;
             Karta[] rukaKomp=null;
             Karta[] sto = null;
@@ -141,10 +149,6 @@ namespace Makao
 
             Karta[] karte = Mesaj();
 
-            for (int i = 0; i < karte.Length; i++)
-            {
-                Console.WriteLine(karte[i].broj + " " + karte[i].znak);
-            }
             Deli5(ref karte,ref rukaIgrac);
             Deli5(ref karte, ref rukaKomp);
             Karta k = null;
@@ -159,21 +163,86 @@ namespace Makao
                 Console.WriteLine("Komp: " + rukaKomp[i].broj + " " + rukaKomp[i].znak);
             }
             Console.WriteLine("Sto: " + sto[sto.Length - 1].broj + " " + sto[sto.Length - 1].znak);
-            Console.WriteLine("Preostale karte");
-            for (int i = 0; i < karte.Length; i++)
-            {
-                Console.WriteLine(karte[i].broj + " " + karte[i].znak);
-            }
             while (true)
             {
-                //igraj igrac 1
-                Console.WriteLine("Odaberite kartu za igranje [broj znak]");
-                string pom = Console.ReadLine();
-                string[] rezultatParsiranja = pom.Split(' ');
-                Int32.TryParse(rezultatParsiranja[0], out int brojZaPretragu);
-                char znakZaPretragu = char.Parse(rezultatParsiranja[1]);
-                Karta k1 = rukaIgrac.FirstOrDefault(p => p.broj == brojZaPretragu && p.znak == znakZaPretragu);
-                Console.WriteLine("Ovu kartu oces "+k1.broj+k1.znak);
+                if (koIgra == 0)
+                {
+                    //igraj igrac 1
+                    Console.WriteLine("Odaberite kartu za igranje igrac[broj znak]");
+                    string pom = Console.ReadLine();
+                    string[] rezultatParsiranja = pom.Split(' ');
+                    Int32.TryParse(rezultatParsiranja[0], out int brojZaPretragu);
+                    char znakZaPretragu = char.Parse(rezultatParsiranja[1]);
+                    Karta k1 = rukaIgrac.FirstOrDefault(p => p.broj == brojZaPretragu && p.znak == znakZaPretragu);
+                    //Console.WriteLine("Ovu kartu oces "+k1.broj+k1.znak);
+                    if (sto[sto.Length - 1].znak == k1.znak || sto[sto.Length - 1].broj == k1.broj || k1.broj == 12)
+                    {
+                        BaciKartuNaSto(ref k1, ref sto);
+                        IzbaciKartuIzRuku(ref rukaIgrac, ref k1);
+                        koIgra = 1;
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                }
+                else
+                {
+                    if (kupi2Stack != 0)  // N A S T A V I !
+                    {
+
+                    }
+                                    //igraj komp
+                    Console.WriteLine("Odaberite kartu za igranje igrac[broj znak]");
+                    string pom = Console.ReadLine();
+                    string[] rezultatParsiranja = pom.Split(' ');
+                    Int32.TryParse(rezultatParsiranja[0], out int brojZaPretragu);
+                    char znakZaPretragu = char.Parse(rezultatParsiranja[1]);
+                    Karta k1 = rukaKomp.FirstOrDefault(p => p.broj == brojZaPretragu && p.znak == znakZaPretragu);
+                    //Console.WriteLine("Ovu kartu oces "+k1.broj+k1.znak);
+                    if (sto[sto.Length - 1].znak == k1.znak || sto[sto.Length - 1].broj == k1.broj || k1.broj == 12)
+                    {
+                        BaciKartuNaSto(ref k1, ref sto);
+                        IzbaciKartuIzRuku(ref rukaKomp, ref k1);
+                        koIgra = 0;
+                        if (k1.broj == 8 || k1.broj==1)
+                        {
+                            koIgra = 1;
+                        }
+                        if (k1.broj == 2 && k1.znak == 'd')
+                        {
+                            UzmiCetiriKarata(ref karte, ref rukaKomp);
+                        }
+                        if (k1.broj == 7)
+                        {
+                            kupi2Stack++;         // N A S T A V I !
+                        }
+
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                }
+                Console.Clear();
+                //for (int i = 0; i < karte.Length; i++)
+                //{
+                //    Console.WriteLine(karte[i].broj + " " + karte[i].znak);
+                //}
+                for (int i = 0; i < rukaIgrac.Length; i++)
+                {
+                    Console.WriteLine("Igrac: " + rukaIgrac[i].broj + " " + rukaIgrac[i].znak);
+                }
+                for (int i = 0; i < rukaKomp.Length; i++)
+                {
+                    Console.WriteLine("Komp: " + rukaKomp[i].broj + " " + rukaKomp[i].znak);
+                }
+                Console.WriteLine("Sto: " + sto[sto.Length - 1].broj + " " + sto[sto.Length - 1].znak);
+                //Console.WriteLine("Preostale karte");
+                //for (int i = 0; i < karte.Length; i++)
+                //{
+                //    Console.WriteLine(karte[i].broj + " " + karte[i].znak);
+                //}
                 //igraj igrac 2
             }
         }
